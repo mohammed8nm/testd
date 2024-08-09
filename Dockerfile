@@ -1,7 +1,20 @@
+# Use an official Python runtime as a parent image
 FROM python:3.9
-EXPOSE 5000
+
+# Set the working directory in the container
 WORKDIR /app
-COPY ./requirements.txt requirements.txt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-COPY . .
-CMD ["flask", "run", "--host", "0.0.0.0"]
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
+
+# Define environment variable for Flask
+ENV FLASK_APP=app.py
+
+# Run app.py when the container launches
+CMD ["flask", "run", "--host=0.0.0.0"]
